@@ -183,6 +183,24 @@ public class LinkedList {
 		}
 		head = prev;
 	}
+	
+	
+	Node xyz = head;
+	Node forward = null;
+	Node prev = null;
+	//Reverse using recursion - O(n)
+	//current is the head node which we will pass
+	public void reverse(Node current){
+		if(current == null){
+			return ;
+		}
+		forward = current.next;
+		current.next = prev;
+		prev = current;
+		reverse(forward);
+		head = prev;
+		tail = current;
+	}
 
 	public static void main(String args[]) {
 		LinkedList l = new LinkedList();
@@ -205,9 +223,10 @@ public class LinkedList {
 		l.print();
 		System.out.println("\n" + l.head.data + " : " + l.tail.data);
 		System.out.println("\nafter reverse");
-		l.reverse();
+		l.reverse(l.head);
 		l.print();
 		System.out.println("\n" + l.head.data + " : " + l.tail.data);
+		
 		l.add(67);
 		l.print();
 		System.out.println("\n" + l.head.data + " : " + l.tail.data);
@@ -215,6 +234,8 @@ public class LinkedList {
 		System.out.println("InterView Question");
 		int mid = l.findMid();
 		System.out.println("Mid is "+mid);
+		
+		
 		
 	}
 	
