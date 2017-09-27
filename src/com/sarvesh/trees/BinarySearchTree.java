@@ -1,10 +1,12 @@
 package com.sarvesh.trees;
 
+import com.sarvesh.D_Queue.*;
+
 /*
  * Time complexity
- * Insert - O(logn) if it's a balanced 
- * Search - O(logn) if it's a balanced
- * delete - 0(logn) if it's a balanced
+ * Insert -O(h)- O(logn) if it's a balanced 
+ * Search -O(h)- O(logn) if it's a balanced
+ * delete -O(h)- 0(logn) if it's a balanced
  * 
  * Note - if the bst is skew tree so it is as good as linked list 
  *        so Time complexity T - O(h) and for skew tree h = n - 1 so T - O(n-1) ~ O(n)
@@ -118,6 +120,44 @@ public class BinarySearchTree {
 		return (a > b ? a : b);
 	}
 
+	public Node delete(Node root, int key) {
+		if (root == null) {
+			return root;
+		}
+
+		if (root.key == key) {
+			// if no child
+			if (root.left == null && root.right == null) {
+				return root = null;
+			}
+			// if exactly one child
+			// right sub tree
+			else if (root.left == null) {
+				Node temp = root.right;
+				root.right = null;
+				return temp;
+			}
+			// left sub tree
+			else if (root.right == null) {
+				Node temp = root.left;
+				root.left = null;
+				return temp;
+			}
+			// Two child
+			else {
+				root.key = findMin(root.right);
+				root.right = delete(root.right, root.key);
+			}
+		}
+
+		if (root.key > key) {
+			root.left = delete(root.left, key);
+		} else {
+			root.right = delete(root.right, key);
+		}
+		return root;
+	}
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		BinarySearchTree bst = new BinarySearchTree();
@@ -126,6 +166,7 @@ public class BinarySearchTree {
 		bst.root = bst.insert(bst.root, 15);
 		bst.root = bst.insert(bst.root, 25);
 		bst.root = bst.insert(bst.root, 5);
+
 		bst.inorder(bst.root);
 		boolean x = bst.search(bst.root, 25);
 		if (x) {
@@ -141,6 +182,21 @@ public class BinarySearchTree {
 		System.out.println(bst.checkBst1(bst.root));
 
 		System.out.println(bst.isBst(bst.root));
+
+		/*
+		 * bst.root = bst.delete(bst.root, 10); bst.inorder(bst.root);
+		 * System.out.println(); bst.root = bst.delete(bst.root, 15);
+		 * bst.inorder(bst.root); System.out.println(); bst.root =
+		 * bst.delete(bst.root, 25); bst.inorder(bst.root);
+		 */
+
+		bst.InvertORMirror(bst.root);
+		System.out.println("Inverted a binary tree");
+		bst.inorder(bst.root);
+		bst.InvertORMirror(bst.root);
+
+		Node inorderSuccessor = bst.inOrderSuccessor(bst.root, 5);
+		System.out.println("\nInorderSuccessor " + inorderSuccessor.key);
 	}
 
 	// check if the binary tree is binary search tree or not
@@ -191,4 +247,96 @@ public class BinarySearchTree {
 	// For each node, check if max value in left subtree is smaller than the
 	// node and min value in right subtree greater than the node.
 
+	// Invert or mirror a binary tree T - O(n)
+	public Node Invert(Node root) {
+		if (root == null) {
+			return root;
+		}
+		Node temp = root.right;
+		root.right = root.left;
+		root.left = temp;
+		root.left = Invert(root.left);
+		root.right = Invert(root.right);
+		return root;
+	}
+
+	// Invert or mirror using queue - level order traversal T- O(n)
+	public Node InvertORMirror(Node root) {
+		if (root == null) {
+			return root;
+		}
+		Queue_a q = new Queue_a();
+		q.enqueue(root);
+		while (!q.isEmpty()) {
+			Node current = (Node) q.peek();
+			q.dequeue();
+			// swapped the two children
+			Node temp = current.right;
+			current.right = current.left;
+			current.left = temp;
+			if (current.left != null) {
+				q.enqueue(current.left);
+			}
+			if (current.right != null) {
+				q.enqueue(current.right);
+			}
+
+		}
+		return root;
+	}
+
+	Node someNode;
+
+	public Node searchNode(Node root, int key) {
+		if (root == null) {
+			return root;
+		}
+
+		if (root.key > key) {
+			someNode = searchNode(root.left, key);
+		} else if (root.key < key) {
+			someNode = searchNode(root.right, key);
+		}
+		// we found the node simply return
+		else {
+			return root;
+		}
+		return someNode;
+	}
+
+	// Inorder successor
+	// given a root node and key of the node
+	// return inorder successor of that key
+	public Node inOrderSuccessor(Node root, int key) {
+
+		Node current = searchNode(root, key);
+		if (current == null) {
+			return null;
+		}
+
+		// case 1 : we have right child
+		Node temp = current.right;
+		if (temp != null) {
+			while (temp.left != null) {
+				temp = temp.left;
+			}
+			return temp;
+		} else {
+
+			// case 2: we have to find the deepest ancestor for which the node
+			// lies in it's left subtree
+			Node ancestor = root;
+			Node successor = null;
+
+			while (current != ancestor) {
+				if (current.key < ancestor.key) {
+					successor = ancestor;
+					ancestor = ancestor.left;
+				} else {
+					ancestor = ancestor.right;
+				}
+			}
+			return successor;
+		}
+	}
 }

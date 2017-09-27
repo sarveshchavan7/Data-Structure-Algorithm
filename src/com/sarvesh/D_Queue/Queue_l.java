@@ -9,7 +9,7 @@ public class Queue_l {
 	Node head;
 	Node tail;
 
-	Queue_l() {
+	public Queue_l() {
 		head = tail = null;
 	}
 
@@ -82,6 +82,13 @@ public class Queue_l {
 		}
 	}
 	
+	public boolean isEmpty(){
+		if(head==null && tail==null){
+			return true;
+		}else{
+			return false;
+		}
+	}
 	public static void main(String args[]){
 		Queue_l l = new Queue_l();
 		l.enqueue(3);

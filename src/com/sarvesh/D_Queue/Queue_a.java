@@ -14,7 +14,7 @@ public class Queue_a {
 	int N = 5;
 	int front, rear;
 
-	Queue_a() {
+	public Queue_a() {
 		a = new Object[N];
 		front = rear = -1;
 	}

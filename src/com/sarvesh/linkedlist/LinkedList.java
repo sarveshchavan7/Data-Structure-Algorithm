@@ -1,4 +1,5 @@
-package com.sarvesh.datastructure.D_LinkedList;
+package com.sarvesh.linkedlist;
+
 
 
 
