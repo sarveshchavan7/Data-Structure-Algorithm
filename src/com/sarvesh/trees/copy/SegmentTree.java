@@ -1,4 +1,4 @@
-package com.sarvesh.trees;
+package com.sarvesh.trees.copy;
 
 /*
  * Segment Tree -min segment tree/max segment tree
