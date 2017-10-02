@@ -53,7 +53,7 @@ public class BasicInterviewQue {
 		return result;
 	}
 
-	//fibonacci using recursion - each number is the sum of two preceding no
+	// fibonacci using recursion - each number is the sum of two preceding no
 	public void fibonacci(int x, int y, int curr, int n) {
 		if (n < x) {
 			return;
@@ -65,6 +65,76 @@ public class BasicInterviewQue {
 		fibonacci(x, y, curr, n);
 	}
 
+	// Minimum appends needed to make a string palindrome
+	public int getMinAppendNeeded(String str) {
+		for (int i = 0; i < str.length(); i++) {
+			String currentString = str.substring(i);
+			if (isPalindrome(currentString)) {
+				return i;
+			}
+		}
+		return 0;
+	}
+
+	// Function to check if the given array is palindrome or not
+	public boolean isPalindrome(String[] a, int i, int j) {
+		if (i <= j) {
+			if (i == j) {
+				return true;
+			}
+			if (a[i] != a[j]) {
+				return false;
+			}
+			i += 1;
+			j -= 1;
+			return isPalindrome(a, i, j);
+		}
+		return true;
+	}
+
+	// Function to check if the given String is palindrome or not
+	public boolean isPalindrome(String str) {
+		int i = 0;
+		int j = str.length() - 1;
+		while (i <= j) {
+			if (i == j) {
+				return true;
+			}
+			if (str.charAt(i) != str.charAt(j)) {
+				return false;
+			}
+			i++;
+			j--;
+		}
+		return true;
+	}
+
+	//Check if the given string is the rotation of a palindrome
+	public boolean isRotationOfPalindrome(String str,String mainString){
+		int n = str.length();
+		for(int i=0;i<n-1;i++){
+			String stringOne = str.substring(i+1);
+			String stringTwo = str.substring(0,i+1);
+			if(mainString.equals(stringOne+stringTwo)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	//Given a string print it's all possible rotations
+	public void allPosibleRotation(String str){
+		int n = str.length();
+		for(int i=0;i<n-1;i++){
+			String stringOne = str.substring(i+1);
+			String stringTwo = str.substring(0,i+1);
+			System.out.println(stringOne+""+stringTwo);
+		}
+	}
+	
+	//Program to find the initials of the string and print them in capital - very easy program
+	//input- sarvesh chavan o/p S C
+	
 	public static void main(String args[]) {
 		String a[] = { "S", "A", "R", "V", "E", "S", "H" };
 		BasicInterviewQue b = new BasicInterviewQue();
@@ -80,8 +150,24 @@ public class BasicInterviewQue {
 		System.out.println(no);
 		int x = 0;
 		int y = 1;
-		int curr = x+y;
+		int curr = x + y;
 		System.out.println();
 		b.fibonacci(x, y, curr, 21);
+
+		System.out.println();
+		String array[] = { "a", "b", "b", "a" };
+		boolean value = b.isPalindrome(array, 0, array.length - 1);
+		System.out.println(value);
+
+		boolean valueTwo = b.isPalindrome("abba");
+		System.out.println(valueTwo);
+			
+		
+		int minAppended = b.getMinAppendNeeded("abba");
+		System.out.println("\nMin append req "+minAppended);
+		b.allPosibleRotation("abba");
+		
+		boolean someValue = b.isRotationOfPalindrome("baab","abba");
+		System.out.println(someValue);
 	}
 }
